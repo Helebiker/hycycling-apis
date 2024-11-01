@@ -10,6 +10,8 @@ const { dbConnection } = require('./src/db/connection')
 const expressListEndpoints = require('express-list-endpoints')
 const { UserAuthRoutes } = require('./src/routes/UserAuth/UserAuth.routes')
 const { emptyTablesRoute } = require('./src/dev/clearDB')
+const { DeviceRoutes } = require('./src/routes/Devices/Devices.routes')
+const { UserMetricRoutes } = require('./src/routes/UserMetrics/UserMetrics.routes')
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -24,7 +26,8 @@ app.get('/', (req, res) => {
   res.send(systemConfig.appName)
 })
 app.use('/UserAuth', UserAuthRoutes)
-
+app.use('/Devices',DeviceRoutes)
+app.use('/UserMetrics',UserMetricRoutes)
 const loadModels = () => {
   const modelsPath = path.join(__dirname, './src/models')
   fs.readdirSync(modelsPath).forEach(folder => {
@@ -68,6 +71,11 @@ const syncEachModel = async () => {
     }
   })
 }
+
+app.get('/api/call',(req,res)=>{
+ const htmlFile = fs.readFileSync('./src/views/fitbidConnection.html','utf-8')
+  return res.send(htmlFile)
+})
 
 const startServer = async () => {
   syncEachModel()

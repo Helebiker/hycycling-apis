@@ -24,21 +24,19 @@ const UserMetricsModel = dbConnection.define('UserMetrics', {
     defaultValue: null
   },
   DOB: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY, // Store only the date, ignoring the time
     allowNull: true,
-    defaultValue: null
+    defaultValue: null,
   },
   Gender: {
     type: DataTypes.STRING,
     allowNull: true,
     defaultValue: null,
     validate: {
-      isIn: [['M', 'F', 'O']]
+      isIn: [['M', 'F', 'O']],
     }
   }
 })
-
-UserMetricsModel.belongsTo(UsersModel, { foreignKey: 'UserId' })
 
 module.exports = {
   UserMetricsModel

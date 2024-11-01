@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection Successful - IA Cycling</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header img {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .header h2 {
+            font-size: 20px;
+            color: #333333;
+        }
+
+        .content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .content h1 {
+            font-size: 24px;
+            color: #333333;
+        }
+
+        .content p {
+            font-size: 16px;
+            color: #555555;
+            margin: 20px 0;
+        }
+
+        .code-section {
+            font-size: 18px;
+            color: #333333;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .confirm-button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #ffffff;
+            background-color: #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #888888;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="email-container">
+        <!-- Header with logo and app name -->
+        <div class="header">
+            <img src="https://i.ibb.co/D19hYxK/Group-12.png" alt="IA Cycling Logo">
+            <h2>IA Cycling</h2>
+        </div>
+
+        <!-- Email content -->
+        <div class="content">
+            <h1>Thank You for Connecting Your Fitbit</h1>
+            <p>We’re excited to let you know that your Fitbit device has been successfully connected to IA Cycling.</p>
+            <img src="https://1000logos.net/wp-content/uploads/2017/09/Fitbit-Logo-1024x640.png" alt="Fitbit Logo" style="max-width: 100px; margin: 20px 0;">
+            <p>Now you can track your activity, monitor your progress, and achieve your goals with IA Cycling. We’re here to support you every step of the way!</p>
+
+            <!-- Display the code and confirmation button -->
+            <div class="code-section">
+                Your code is: <span id="code">[CODE]</span>
+            </div>
+            <div class="code-section">
+                Your User Id  is: <span id="userid">[CODE]</span>
+            </div>
+            <a href="confirm_connection.html?code=[CODE]" class="confirm-button">Press Here to Confirm this Connection</a>
+
+            <hr style="margin: 40px 0; border: none; border-top: 1px solid #dddddd;">
+
+            <!-- Spanish Section -->
+            <h1>Gracias por Conectar tu Fitbit</h1>
+            <p>Estamos encantados de informarte que tu dispositivo Fitbit se ha conectado exitosamente a IA Cycling.</p>
+            <img src="https://1000logos.net/wp-content/uploads/2017/09/Fitbit-Logo-1024x640.png" alt="Fitbit Logo" style="max-width: 100px; margin: 20px 0;">
+            <p>Ahora puedes seguir tu actividad, monitorear tu progreso y alcanzar tus objetivos con IA Cycling. ¡Estamos aquí para apoyarte en cada paso!</p>
+            
+            <!-- Display the code and confirmation button in Spanish -->
+            <div class="code-section">
+                Tu código es: <span id="code">[CODE]</span>
+            </div>
+            <a href="confirm_connection.html?code=[CODE]" class="confirm-button">Haz clic aquí para confirmar esta conexión</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>If you have any questions, feel free to reach out to our support team.</p>
+            <p>Si tienes alguna pregunta, no dudes en comunicarte con nuestro equipo de soporte.</p>
+            <p>&copy; 2024 IA Cycling. All rights reserved. | Todos los derechos reservados.</p>
+        </div>
+    </div>
+
+    <script>
+        // Retrieve 'code' query parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const userid = urlParams.get('state');
+        document.getElementById('code').textContent = code;
+        document.getElementById('userid').textContent = userid;
+    </script>
+</body>
+</html>

@@ -10,7 +10,9 @@ const { UsersModel } = require('../../models/Users/Users.model')
 const { createNewAuthToken } = require('../../utils/auth/authToken.generator')
 
 const bcrypt = require('bcrypt')
-
+const {
+  UserMetricsModel
+} = require('../../models/UserMetrics/UserMetrics.model')
 
 exports.registerSendOTP = async (req, res) => {
   try {
@@ -219,6 +221,7 @@ exports.registerVerifyOTP = async (req, res) => {
     })
   }
 }
+
 exports.login = async (req, res) => {
   // Input validation schema using Joi
   const { email, password } = req.body
@@ -229,6 +232,7 @@ exports.login = async (req, res) => {
       message: `Missing fields: ${missingFields.join(', ')}`
     })
   }
+
   try {
     // Fetch user by email
     const user = await UsersModel.findOne({ where: { Email: email } })
@@ -236,21 +240,42 @@ exports.login = async (req, res) => {
       return res.status(404).json({ message: 'User not found' })
     }
 
-    // Compare passwords using bcrypt (async/await)
+   // Compare passwords using bcrypt (async/await)
     const isMatch = await bcrypt.compare(password, user.Password)
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid password' })
     }
 
     // Generate auth token
-    const authToken = createNewAuthToken({ UserId: user.UserId })
+    const authToken = await createNewAuthToken({ UserId: user.UserId })
 
-    // Send response
-    return res.status(200).json({
-      message: 'Login successful',
-      user: { UserId: user.UserId, Email: user.Email }, // Expose only safe user fields
-      authToken
+    const userMetrics = await UserMetricsModel.findOne({
+      where: { UserId: user.UserId }
     })
+    if (!userMetrics) {
+      return res.status(404).json({
+        message: 'User metrics not found'
+      })
+    }
+
+    const notNullFIelds = ['Height', 'Weight', 'BMI', 'DOB', 'Gender']
+    const missingFields = notNullFIelds.filter(field => !userMetrics[field])
+    if (missingFields.length) {
+      return res.status(401).json({
+        message: `user metrics missing fields: ${missingFields.join(', ')}`,
+        route: 'UserMetrics',
+        authToken
+      })
+    }
+    else{
+      return res.status(200).json({
+        message: 'Login successful',
+        user: { UserId: user.UserId, Email: user.Email }, // Expose only safe user fields
+        authToken
+      })
+    }
+    // Send response
+    
   } catch (err) {
     console.error('Login error:', err)
     return res.status(500).json({ message: 'Internal server error' })
